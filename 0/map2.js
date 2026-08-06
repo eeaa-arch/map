@@ -7,6 +7,7 @@ initAudio();
 
 //10.15332,56.16728
 const bass = [9.9706758,53.5625445];
+const perform = [10.0383684,53.5876819];
 const train = [9.97684,53.55819];
 const wind= [9.97920,53.56170];
 const map = new mapboxgl.Map({
@@ -27,12 +28,15 @@ const map = new mapboxgl.Map({
 });
 
  //POPUPS
-    //testA
+    //bass
     const popupbass = new mapboxgl.Popup({ offset: 25 }).setHTML('<h3>' + "Bass" + '</h3><p>' + "Recorded 5.7.26 at 45Hertz Festival" + '</p><p>' + "Get closer to play recording" + '</p>');
     //Train
     const popuptrain = new mapboxgl.Popup({ offset: 25 }).setHTML('<h3>' + "U-Bahn" + '</h3><p>' + "Recorded 7.7.26 in the Messehallen U-Bahn station" + '</p><p>' + "Get closer to play recording" + '</p>');
     //Wind
     const popupwind = new mapboxgl.Popup({ offset: 25 }).setHTML('<h3>' + "Wind" + '</h3><p>' + "Recorded 3.7.26 in Planten un Blomen" + '</p><p>' + "Get closer to play recording" + '</p>');
+    //perform
+    const popupperform = new mapboxgl.Popup({ offset: 25 }).setHTML('<h3>' + "Performance" + '</h3><p>' + "Recorded 3.7.26 at Genealogía in Situ" + '</p><p>' + "Get closer to play recording" + '</p>');
+    
 
     // create DOM element for the marker
     const elbass = document.createElement('div');
@@ -41,6 +45,8 @@ const map = new mapboxgl.Map({
     eltrain.id = 'marker';
     const elwind = document.createElement('div');
     elwind.id = 'marker';
+    const elperform = document.createElement('div');
+    elperform.id = 'marker';
 
     // create the marker
     new mapboxgl.Marker(elbass)
@@ -54,6 +60,10 @@ const map = new mapboxgl.Map({
     new mapboxgl.Marker(elwind)
         .setLngLat(wind)
         .setPopup(popupwind) // sets a popup on this marker
+        .addTo(map);
+    new mapboxgl.Marker(elperform)
+        .setLngLat(perform)
+        .setPopup(popupperform) // sets a popup on this marker
         .addTo(map);
 
 var canvas = map.getCanvasContainer();
@@ -105,6 +115,13 @@ geolocate.on('geolocate', function (e) {
     elbass.id = 'marker';new mapboxgl.Marker(elbass)
         .setLngLat(bass)
         .setPopup(popupbass) // sets a popup on this marker
+        .addTo(map)};
+    var distanceperform = turf.distance(position, perform, units);
+    if (distanceperform < 50){const popupperform = new mapboxgl.Popup({ offset: 25 }).setHTML('<h3>' + "Performance" + '</h3><p>' + "Recorded 3.7.26 at Genealogía in Situ" + '</p>' +
+            '<audio controls><source src="' + "performance.mp3" + '" type="audio/mpeg"></audio>');const elperform = document.createElement('div');
+    elperform.id = 'marker';new mapboxgl.Marker(elperform)
+        .setLngLat(perform)
+        .setPopup(popupperform) // sets a popup on this marker
         .addTo(map)}
 });
 
