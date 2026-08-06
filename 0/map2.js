@@ -6,7 +6,7 @@ var playable = true;
 initAudio();
 
 //10.15332,56.16728
-const testa = [10.15684,56.16934];
+const bass = [9.9706758,53.5625445];
 const train = [9.97684,53.55819];
 const wind= [9.97920,53.56170];
 const map = new mapboxgl.Map({
@@ -21,31 +21,31 @@ const map = new mapboxgl.Map({
     // style: "https://openmaptiles.github.io/klokantech-3d-gl-style/style-cdn.json",                        
     // style: "https://openmaptiles.github.io/fiord-color-gl-style/style-cdn.json",
     // style: "https://openmaptiles.github.io/dark-matter-gl-style/style-cdn.json",
-     // center: [9.97038888, 53.55922],
-        center: [10.15719,56.16976],
+      center: [9.97038888, 53.55922],
+     //   center: [10.15719,56.16976],
     zoom: 16
 });
 
  //POPUPS
     //testA
-    const popuptesta = new mapboxgl.Popup({ offset: 25 }).setHTML('<h3>' + "For Angelo" + '</h3><p>' + "Be my guinea pig" + '</p><p>' + "Get closer to play recording" + '</p>');
+    const popupbass = new mapboxgl.Popup({ offset: 25 }).setHTML('<h3>' + "Bass" + '</h3><p>' + "Recorded 5.7.26 at 45Hertz Festival" + '</p><p>' + "Get closer to play recording" + '</p>');
     //Train
     const popuptrain = new mapboxgl.Popup({ offset: 25 }).setHTML('<h3>' + "U-Bahn" + '</h3><p>' + "Recorded 7.7.26 in the Messehallen U-Bahn station" + '</p><p>' + "Get closer to play recording" + '</p>');
     //Wind
     const popupwind = new mapboxgl.Popup({ offset: 25 }).setHTML('<h3>' + "Wind" + '</h3><p>' + "Recorded 3.7.26 in Planten un Blomen" + '</p><p>' + "Get closer to play recording" + '</p>');
 
     // create DOM element for the marker
-    const eltesta = document.createElement('div');
-    eltesta.id = 'marker';
+    const elbass = document.createElement('div');
+    elbass.id = 'marker';
     const eltrain = document.createElement('div');
     eltrain.id = 'marker';
     const elwind = document.createElement('div');
     elwind.id = 'marker';
 
     // create the marker
-    new mapboxgl.Marker(eltesta)
-        .setLngLat(testa)
-        .setPopup(popuptesta) // sets a popup on this marker
+    new mapboxgl.Marker(elbass)
+        .setLngLat(bass)
+        .setPopup(popupbass) // sets a popup on this marker
         .addTo(map);
     new mapboxgl.Marker(eltrain)
         .setLngLat(train)
@@ -99,12 +99,12 @@ geolocate.on('geolocate', function (e) {
         .setLngLat(wind)
         .setPopup(popupwind) // sets a popup on this marker
         .addTo(map)};
-    var distanceangelo = turf.distance(position, testa, units);
-    if (distanceangelo < 50){const popuptesta = new mapboxgl.Popup({ offset: 25 }).setHTML('<h3>' + "For Angelo" + '</h3><p>' + "Surprise!" + '</p>' +
-            '<audio controls><source src="' + "angelo.mp3" + '" type="audio/mpeg"></audio>');const eltesta = document.createElement('div');
-    eltesta.id = 'marker';new mapboxgl.Marker(eltesta)
-        .setLngLat(testa)
-        .setPopup(popuptesta) // sets a popup on this marker
+    var distancebass = turf.distance(position, bass, units);
+    if (distancebass < 50){const popupbass = new mapboxgl.Popup({ offset: 25 }).setHTML('<h3>' + "Bass" + '</h3><p>' + "Recorded 5.7.26 at 45Hertz Festival" + '</p>' +
+            '<audio controls><source src="' + "bass.mp3" + '" type="audio/mpeg"></audio>');const elbass = document.createElement('div');
+    elbass.id = 'marker';new mapboxgl.Marker(elbass)
+        .setLngLat(bass)
+        .setPopup(popupbass) // sets a popup on this marker
         .addTo(map)}
 });
 
