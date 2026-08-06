@@ -10,6 +10,7 @@ const bass = [9.9706758,53.5625445];
 const perform = [10.0383684,53.5876819];
 const train = [9.97684,53.55819];
 const wind= [9.97920,53.56170];
+const paper = [9.97038888, 53.55922];
 const map = new mapboxgl.Map({
     accessToken: 'pk.eyJ1IjoiZXZlYTEyIiwiYSI6ImNtcjdzYXY5MTBocnEyeXFvYTRqamo4YTUifQ.xzMb4LxFvFWK7NVWI_tNLg',
     container: "map",
@@ -36,6 +37,8 @@ const map = new mapboxgl.Map({
     const popupwind = new mapboxgl.Popup({ offset: 25 }).setHTML('<h3>' + "Wind" + '</h3><p>' + "Recorded 3.7.26 in Planten un Blomen" + '</p><p>' + "Get closer to play recording" + '</p>');
     //perform
     const popupperform = new mapboxgl.Popup({ offset: 25 }).setHTML('<h3>' + "Performance" + '</h3><p>' + "Recorded 3.7.26 at Genealogía in Situ" + '</p><p>' + "Get closer to play recording" + '</p>');
+    //paper
+    const popuppaper = new mapboxgl.Popup({ offset: 25 }).setHTML('<h3>' + "Paper" + '</h3><p>' + "Recorded 9.3.26 in Vorwerk Stift atelier" + '</p><p>' + "Get closer to play recording" + '</p>');
     
 
     // create DOM element for the marker
@@ -47,6 +50,8 @@ const map = new mapboxgl.Map({
     elwind.id = 'marker';
     const elperform = document.createElement('div');
     elperform.id = 'marker';
+    const elpaper = document.createElement('div');
+    elpaper.id = 'marker';
 
     // create the marker
     new mapboxgl.Marker(elbass)
@@ -64,6 +69,10 @@ const map = new mapboxgl.Map({
     new mapboxgl.Marker(elperform)
         .setLngLat(perform)
         .setPopup(popupperform) // sets a popup on this marker
+        .addTo(map);
+    new mapboxgl.Marker(elpaper)
+        .setLngLat(paper)
+        .setPopup(popuppaper) // sets a popup on this marker
         .addTo(map);
 
 var canvas = map.getCanvasContainer();
@@ -122,6 +131,13 @@ geolocate.on('geolocate', function (e) {
     elperform.id = 'marker';new mapboxgl.Marker(elperform)
         .setLngLat(perform)
         .setPopup(popupperform) // sets a popup on this marker
+        .addTo(map)};
+    var distancepaper = turf.distance(position, paper, units);
+    if (distancepaper < 50){const popuppaper = new mapboxgl.Popup({ offset: 25 }).setHTML('<h3>' + "Paper" + '</h3><p>' + "Recorded 9.3.26 in Vorwerk Stift atelier" + '</p>' +
+            '<audio controls><source src="' + "paper.mp3" + '" type="audio/mpeg"></audio>');const elpaper = document.createElement('div');
+    elpaper.id = 'marker';new mapboxgl.Marker(elpaper)
+        .setLngLat(paper)
+        .setPopup(popuppaper) // sets a popup on this marker
         .addTo(map)}
 });
 
