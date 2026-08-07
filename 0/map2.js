@@ -134,7 +134,7 @@ geolocate.on('geolocate', function (e) {
         .setPopup(popupperform) // sets a popup on this marker
         .addTo(map)};
     var distancepaper = turf.distance(position, paper, units);
-    if (distancepaper < 80){const popuppaper = new mapboxgl.Popup({ offset: 25 }).setHTML('<h3>' + "Paper" + '</h3><p>' + "Recorded 9.3.26 in Vorwerk Stift atelier" + '</p>' +
+    if (distancepaper < 180){const popuppaper = new mapboxgl.Popup({ offset: 25 }).setHTML('<h3>' + "Paper" + '</h3><p>' + "Recorded 9.3.26 in Vorwerk Stift atelier" + '</p>' +
             '<audio controls><source src="' + "paper.mp3" + '" type="audio/mpeg"></audio>');const elpaper = document.createElement('div');
     elpaper.id = 'marker';new mapboxgl.Marker(elpaper)
         .setLngLat(paper)
