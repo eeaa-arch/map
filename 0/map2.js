@@ -10,8 +10,8 @@ const bass = [9.9706758,53.5625445];
 const perform = [10.0383684,53.5876819];
 const train = [9.97684,53.55819];
 const wind= [9.97920,53.56170];
-//const paper = [9.97038888, 53.55922];
-const paper = [10.15719,56.16976];
+const paper = [9.97038888, 53.5594399];
+//const paper = [10.15719,56.16976];
 const map = new mapboxgl.Map({
     accessToken: 'pk.eyJ1IjoiZXZlYTEyIiwiYSI6ImNtcjdzYXY5MTBocnEyeXFvYTRqamo4YTUifQ.xzMb4LxFvFWK7NVWI_tNLg',
     container: "map",
