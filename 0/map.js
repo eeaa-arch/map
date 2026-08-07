@@ -1,13 +1,19 @@
 var RADIUS = 50;
-var map = null;
 var markers = [];
 var sounds = [];
 var playable = true;
 
 initAudio();
 
+//10.15332,56.16728
+const bass = [9.9706758,53.5625445];
+const perform = [10.0383684,53.5876819];
+const train = [9.97684,53.55819];
+const wind= [9.97920,53.56170];
+//const paper = [9.97038888, 53.55922];
+const paper = [10.15719,56.16976];
 const map = new mapboxgl.Map({
-    accessToken: 'pk.eyJ1IjoiZXZlYTEyIiwiYSI6ImNtcjdzYXY5MTBocnEyeXFvYTRqamo4YTUifQ.xzMb4LxFvFWK7NVWI_tNLg'
+    accessToken: 'pk.eyJ1IjoiZXZlYTEyIiwiYSI6ImNtcjdzYXY5MTBocnEyeXFvYTRqamo4YTUifQ.xzMb4LxFvFWK7NVWI_tNLg',
     container: "map",
     style: 'mapbox://styles/mapbox/standard',
     // style: "https://openmaptiles.github.io/dark-matter-gl-style/style-cdn.json",
@@ -18,34 +24,134 @@ const map = new mapboxgl.Map({
     // style: "https://openmaptiles.github.io/klokantech-3d-gl-style/style-cdn.json",                        
     // style: "https://openmaptiles.github.io/fiord-color-gl-style/style-cdn.json",
     // style: "https://openmaptiles.github.io/dark-matter-gl-style/style-cdn.json",
-     // center: [9.97038888, 53.55922],
-        center: [9.97038888, 53.55922],
+      center: [9.97038888, 53.55922],
+     //   center: [10.15719,56.16976],
     zoom: 16
 });
 
+ //POPUPS
+    //bass
+    const popupbass = new mapboxgl.Popup({ offset: 25 }).setHTML('<h3>' + "Bass" + '</h3><p>' + "Recorded 5.7.26 at 45Hertz Festival" + '</p><p>' + "Get closer to play recording" + '</p>');
+    //Train
+    const popuptrain = new mapboxgl.Popup({ offset: 25 }).setHTML('<h3>' + "U-Bahn" + '</h3><p>' + "Recorded 7.7.26 in the Messehallen U-Bahn station" + '</p><p>' + "Get closer to play recording" + '</p>');
+    //Wind
+    const popupwind = new mapboxgl.Popup({ offset: 25 }).setHTML('<h3>' + "Wind" + '</h3><p>' + "Recorded 3.7.26 in Planten un Blomen" + '</p><p>' + "Get closer to play recording" + '</p>');
+    //perform
+    const popupperform = new mapboxgl.Popup({ offset: 25 }).setHTML('<h3>' + "Performance" + '</h3><p>' + "Recorded 3.7.26 at Genealogía in Situ" + '</p><p>' + "Get closer to play recording" + '</p>');
+    //paper
+    const popuppaper = new mapboxgl.Popup({ offset: 25 }).setHTML('<h3>' + "Paper" + '</h3><p>' + "Recorded 9.3.26 in Vorwerk Stift atelier" + '</p><p>' + "Get closer to play recording" + '</p>');
+    
+
+    // create DOM element for the marker
+    const elbass = document.createElement('div');
+    elbass.id = 'marker';
+    const eltrain = document.createElement('div');
+    eltrain.id = 'marker';
+    const elwind = document.createElement('div');
+    elwind.id = 'marker';
+    const elperform = document.createElement('div');
+    elperform.id = 'marker';
+    const elpaper = document.createElement('div');
+    elpaper.id = 'marker';
+
+    // create the marker
+    new mapboxgl.Marker(elbass)
+        .setLngLat(bass)
+        .setPopup(popupbass) // sets a popup on this marker
+        .addTo(map);
+    new mapboxgl.Marker(eltrain)
+        .setLngLat(train)
+        .setPopup(popuptrain) // sets a popup on this marker
+        .addTo(map);
+    new mapboxgl.Marker(elwind)
+        .setLngLat(wind)
+        .setPopup(popupwind) // sets a popup on this marker
+        .addTo(map);
+    new mapboxgl.Marker(elperform)
+        .setLngLat(perform)
+        .setPopup(popupperform) // sets a popup on this marker
+        .addTo(map);
+    new mapboxgl.Marker(elpaper)
+        .setLngLat(paper)
+        .setPopup(popuppaper) // sets a popup on this marker
+        .addTo(map);
+
 var canvas = map.getCanvasContainer();
 
-map.addControl(new mapboxgl.NavigationControl({
-    showCompass: false
-}), "top-left");
+// Creates a new scale control to measure the map
+    const scale = new mapboxgl.ScaleControl({
+        maxWidth: 100, // the max pixel width of the scale bar to be rendered on the map (default is 100 pixels)
+        unit: 'metric' // The type of measurement displayed, options are: 'imperial', 'metric', 'nautical' (default it metric)
+    });
+// Adds the new scale control to the map
+    map.addControl(scale);
 
-map.addControl(new mapboxgl.ScaleControl({
-    maxWidth: 80,
-    unit: 'imperial'
-}), "bottom-right");
+ // Add geolocate control to the map.
+   const geolocate = new mapboxgl.GeolocateControl({
+            positionOptions: {
+                enableHighAccuracy: true
+            },
+            // When active the map will receive updates to the device's location as it changes.
+            trackUserLocation: true,
+            // Draw an arrow next to the location dot to indicate which direction the device is heading.
+            showUserHeading: true
+        });
 
-map.addControl(new mapboxgl.GeolocateControl({
-    positionOptions: {
-        enableHighAccuracy: true
-    },
-    trackUserLocation: true,
-    showUserLocation: true,
-    fitBoundsOptions: {
-    }
-}).on('geolocate', function (e) {
+// Add the control to the map.
+map.addControl(geolocate);
+// Set an event listener that fires
+// when a geolocate event occurs.
+geolocate.on('geolocate', function (e) {
     console.log("Geolocated: " + e.coords.longitude + "," + e.coords.latitude);
-    activate(e.coords.longitude, e.coords.latitude);
-}), "top-left");
+    var position = [e.coords.longitude, e.coords.latitude];
+    var units = { units: "meters" };
+    var distancetrain = turf.distance(position, train, units);
+    var distancewind = turf.distance(position, wind, units);
+    var distancebass = turf.distance(position, bass, units);
+    var distanceperform = turf.distance(position, perform, units);
+    var distancepaper = turf.distance(position, paper, units);
+});
+
+if (distancetrain < 50){const popuptrain = new mapboxgl.Popup({ offset: 25 }).setHTML('<h3>' + "U-Bahn" + '</h3><p>' + "Recorded 7.7.26 in the Messehallen U-Bahn station" + '</p>' +
+            '<audio controls><source src="' + "Train.mp3" + '" type="audio/mpeg"></audio>');const eltrain = document.createElement('div');
+    eltrain.id = 'marker';new mapboxgl.Marker(eltrain)
+        .setLngLat(train)
+        .setPopup(popuptrain) // sets a popup on this marker
+        .addTo(map)};
+ if (distancewind < 50){const popupwind = new mapboxgl.Popup({ offset: 25 }).setHTML('<h3>' + "Wind" + '</h3><p>' + "Recorded 3.7.26 in Planten un Blomen" + '</p>' +
+            '<audio controls><source src="' + "wind.mp3" + '" type="audio/mpeg"></audio>');const elwind = document.createElement('div');
+    elwind.id = 'marker';new mapboxgl.Marker(elwind)
+        .setLngLat(wind)
+        .setPopup(popupwind) // sets a popup on this marker
+        .addTo(map)};
+if (distancebass < 50){const popupbass = new mapboxgl.Popup({ offset: 25 }).setHTML('<h3>' + "Bass" + '</h3><p>' + "Recorded 5.7.26 at 45Hertz Festival" + '</p>' +
+            '<audio controls><source src="' + "bass.mp3" + '" type="audio/mpeg"></audio>');const elbass = document.createElement('div');
+    elbass.id = 'marker';new mapboxgl.Marker(elbass)
+        .setLngLat(bass)
+        .setPopup(popupbass) // sets a popup on this marker
+        .addTo(map)};
+if (distanceperform < 50){const popupperform = new mapboxgl.Popup({ offset: 25 }).setHTML('<h3>' + "Performance" + '</h3><p>' + "Recorded 3.7.26 at Genealogía in Situ" + '</p>' +
+            '<audio controls><source src="' + "performance.mp3" + '" type="audio/mpeg"></audio>');const elperform = document.createElement('div');
+    elperform.id = 'marker';new mapboxgl.Marker(elperform)
+        .setLngLat(perform)
+        .setPopup(popupperform) // sets a popup on this marker
+        .addTo(map)};
+if (distancepaper < 180){const popuppaper = new mapboxgl.Popup({ offset: 25 }).setHTML('<h3>' + "Paper" + '</h3><p>' + "Recorded 9.3.26 in Vorwerk Stift atelier" + '</p>' +
+            '<audio controls><source src="' + "paper.mp3" + '" type="audio/mpeg"></audio>');const elpaper = document.createElement('div');
+    elpaper.id = 'marker';new mapboxgl.Marker(elpaper)
+        .setLngLat(paper)
+        .setPopup(popuppaper) // sets a popup on this marker
+        .addTo(map)};
+
+ map.on('click', (e) => {
+        document.getElementById('info').innerHTML =
+            // `e.point` is the x, y coordinates of the `mousemove` event
+            // relative to the top-left corner of the map.
+            JSON.stringify(e.point) +
+            '<br />' +
+            // `e.lngLat` is the longitude, latitude geographical position of the event.
+            JSON.stringify(e.lngLat.wrap());
+    });
 
 map.on('mousemove', function(e) {
     canvas.style.cursor = 'default';            
@@ -74,13 +180,6 @@ function addMarker (lng, lat, path) {
     sounds.push(id);
 }
 
-function getDistance (lng1, lat1, lng2, lat2) {
-    var from = turf.point([lng1, lat1]);
-    var to = turf.point([lng2, lat2]);
-    var distance = turf.distance(from, to, 'miles') * 5280;
-    return distance;
-}
-
 function activate (lng, lat) {
     document.getElementById('info').innerHTML = lng.toFixed(5) + "," + lat.toFixed(5);            
     for (var m in markers) {
@@ -97,7 +196,7 @@ function activate (lng, lat) {
             }
         }
     }
-}
+};
 
 var script = document.createElement("script"); 
 script.src = "markers.js?v=" + Math.floor(Math.random() * Math.floor(10000));
