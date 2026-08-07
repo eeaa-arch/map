@@ -15,8 +15,8 @@ const paper = [9.97038888, 53.5594399];
 const map = new mapboxgl.Map({
     accessToken: 'pk.eyJ1IjoiZXZlYTEyIiwiYSI6ImNtcjdzYXY5MTBocnEyeXFvYTRqamo4YTUifQ.xzMb4LxFvFWK7NVWI_tNLg',
     container: "map",
-    style: 'mapbox://styles/mapbox/standard',
-    // style: "https://openmaptiles.github.io/dark-matter-gl-style/style-cdn.json",
+    // style: 'mapbox://styles/mapbox/standard',
+    style: "mapbox://styles/evea12/cmsiq36fg00j801sahwadgd0k",
     // style: "https://openmaptiles.github.io/positron-gl-style/style-cdn.json",
     // style: "https://openmaptiles.github.io/osm-bright-gl-style/style-cdn.json",            
     // style: "https://openmaptiles.github.io/klokantech-basic-gl-style/style-cdn.json",
